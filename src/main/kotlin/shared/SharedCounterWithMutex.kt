@@ -9,12 +9,17 @@ val mutex = Mutex()
 fun main(args: Array<String>) {
     runBlocking {
         val count = launch (Dispatchers.Default) {
-            massiveRun {
+            incrementORDecrement(action1 = {
                 // protect each increment with lock
                 mutex.withLock {
                     counter++
                 }
-            }
+            }, action2 = {
+                // protect each increment with lock
+                mutex.withLock {
+                    counter--
+                }
+            })
         }
         count.join()
         println("Counter = $counter")

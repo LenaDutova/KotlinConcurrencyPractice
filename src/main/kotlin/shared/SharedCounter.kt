@@ -6,27 +6,19 @@ var counter = 0
 fun main(args: Array<String>) {
     runBlocking {
         val count = launch (Dispatchers.Default) {
-            massiveRun {
-                counter++
-            }
+            incrementORDecrement(action1 = {counter++}, action2 = {counter--})
         }
         count.join()
         println("Counter = $counter")
     }
 }
 
-suspend fun massiveRun(action: suspend () -> Unit) {
-    val n = 100  // number of coroutines to launch
-    val k = 1000 // times an action is repeated by each coroutine
-
+suspend fun incrementORDecrement(k : Int = 10000, action1: suspend () -> Unit, action2: suspend () -> Unit){
     val time = measureTimeMillis {
-        coroutineScope { // scope for coroutines
-            repeat(n) {
-                launch {
-                    repeat(k) { action() }
-                }
-            }
+        coroutineScope {
+            launch { repeat(k) {action1()} }
+            launch { repeat(k) {action2()} }
         }
     }
-    println("Completed ${n * k} actions in $time ms")
+    println("Completed ${k} actions in $time ms")
 }

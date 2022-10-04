@@ -25,12 +25,12 @@ fun main(args: Array<String>){
     */
 
     // синхронный запуск, т.е. ожидаем завершения работы
-//    runBlocking {
-//        launch { counterProcedure() }     // пусть запуститься
+    runBlocking {
+        launch { counterProcedure() }     // пусть запуститься
 //
 //        val result = async { counterFunction() }.await() // запуститься и вернет результат
 //        println("Get result from corutine = $result")
-//    }
+    }
 
     // синхронный запуск множества последовательных корутин
 //    runBlocking {
